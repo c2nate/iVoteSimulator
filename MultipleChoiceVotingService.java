@@ -15,7 +15,7 @@ public class MultipleChoiceVotingService extends VotingService {
     public void submitAnswerChoice(Student student) {
         String[] multipleNewAnswer = student.getMultipleAnswers();
 
-        System.out.println(student.getStudentID() + " selected: " + Arrays.toString(multipleNewAnswer));
+        //System.out.println(student.getStudentID() + " selected: " + Arrays.toString(multipleNewAnswer));
 
         String key = student.getStudentID() + Arrays.toString(multipleNewAnswer);
         if (studentAnswers.containsKey(key)) {
