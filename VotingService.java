@@ -55,7 +55,7 @@ public class VotingService {
     public void submitAnswerChoice(Student student) {
         String newAnswer = student.getAnswer();
 
-        System.out.println(student.getStudentID() + " selected: " + newAnswer);
+       // System.out.println(student.getStudentID() + " selected: " + newAnswer);
 
         if (studentAnswers.containsKey(student.getStudentID())) {
             String previousAnswer = studentAnswers.get(student.getStudentID());
