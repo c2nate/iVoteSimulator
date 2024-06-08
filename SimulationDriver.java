@@ -1,107 +1,66 @@
 /**
- * The SimulationDriver class simulates the process of generating questions,
- * submitting answers, and showing results using both single and multiple choice voting services.
+ * This class simulates a voting system for single-choice and multiple-choice questions using a list of randomly generated students.
  */
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class SimulationDriver {
-    
+
     /**
-     * The main method is the entry point of the simulation.
-     * It creates instances of VotingService and MultipleChoiceVotingService,
-     * generates questions, and simulates students submitting answers.
-     *
-     * @param args command line arguments (not used)
+     * The main method that runs the simulation of the voting system.
+     * @param args The command-line arguments (not used in this simulation).
      */
     public static void main(String[] args) {
         VotingService votingService = new VotingService();
         MultipleChoiceVotingService mcVotingService = new MultipleChoiceVotingService();
 
-        Student Kaiden = new Student("KaidenB808");
-        Student Brandon = new Student("BrandonH271");
-        Student Julian = new Student("JulianO355");
-        Student Carlos = new Student("CarlosC726");
+        List<Student> students = generateRandomStudents();
 
-        // SINGLE CHOICE QUESTION 1
-        String[] answerChoice1 = {"Ford", "Dodge", "Mazda", "Cheverolet"};
-        votingService.generateQuestion("Which is not an American Car Brand?", "Single", answerChoice1);
-        votingService.setCorrectAnswer("Mazda");
-
+        // SINGLE CHOICE QUESTION
+        String[] singleChoiceOptions = {"Option A", "Option B"};
+        String correctSingleChoiceAnswer = "Option A"; // Correct answer is Option A
+        votingService.generateQuestion("Single choice. A or B? (Students: " + students.size() + ")", "Single", singleChoiceOptions);
+        votingService.setCorrectAnswer(correctSingleChoiceAnswer);
         votingService.showQuestion();
-       
-        Kaiden.pullRandomAnswer(answerChoice1);
-        votingService.submitAnswerChoice(Kaiden);
 
-        Brandon.pullRandomAnswer(answerChoice1);
-        votingService.submitAnswerChoice(Brandon);
+        // Simulate students answering the single-choice question
+        for (Student student : students) {
+            student.pullRandomAnswer(singleChoiceOptions);
+            votingService.submitAnswerChoice(student);
+        }
 
-        Julian.pullRandomAnswer(answerChoice1);
-        votingService.submitAnswerChoice(Julian);
-
-        Carlos.pullRandomAnswer(answerChoice1);
-        votingService.submitAnswerChoice(Carlos);
-    
+        // Show results for single-choice question
         votingService.showAnswerResults();
 
-        // MULTIPLE SELECTION QUESTION 1
-        String[] answerChoice2 = {"Lincoln", "Fitzgerald", "Quentin", "Washington"};
-        mcVotingService.setMultipleChoiceCorrectAnswer(new String[] {"Lincoln", "Washington"});
-        mcVotingService.generateQuestion("Select only the names of presidents.", "Multiple", answerChoice2);
-
+        // MULTIPLE CHOICE QUESTION
+        String[] multipleChoiceOptions = {"A", "B", "C", "D"};
+        String[] correctMultipleChoiceAnswers = {"A", "D"};
+        mcVotingService.setMultipleChoiceCorrectAnswer(correctMultipleChoiceAnswers);
+        mcVotingService.generateQuestion("Multiple Choice. Select all correct options. (Students: " + students.size() + ")", "Multiple", multipleChoiceOptions);
         mcVotingService.showQuestion();
-        
-        Kaiden.pullMultipleRandAnswers(answerChoice2);
-        mcVotingService.submitAnswerChoice(Kaiden);
 
-        Brandon.pullMultipleRandAnswers(answerChoice2);
-        mcVotingService.submitAnswerChoice(Brandon);
+        // Simulate students answering the multiple-choice question
+        for (Student student : students) {
+            student.pullMultipleRandAnswers(multipleChoiceOptions);
+            mcVotingService.submitAnswerChoice(student);
+        }
 
-        Julian.pullMultipleRandAnswers(answerChoice2);
-        mcVotingService.submitAnswerChoice(Julian);
-
-        Carlos.pullMultipleRandAnswers(answerChoice2);
-        mcVotingService.submitAnswerChoice(Carlos);
-
+        // Show results for multiple-choice question
         mcVotingService.showAnswerResults();
+    }
 
-        // SINGLE CHOICE QUESTION 2
-        String[] answerChoice3 = {"320", "64", "256", "4"};
-        votingService.generateQuestion("How many bits is 32 bytes?", "Single", answerChoice3);
-        votingService.setCorrectAnswer("256");
- 
-        votingService.showQuestion();
-        
-        Kaiden.pullRandomAnswer(answerChoice3);
-        votingService.submitAnswerChoice(Kaiden);
- 
-        Brandon.pullRandomAnswer(answerChoice3);
-        votingService.submitAnswerChoice(Brandon);
- 
-        Julian.pullRandomAnswer(answerChoice3);
-        votingService.submitAnswerChoice(Julian);
- 
-        Carlos.pullRandomAnswer(answerChoice3);
-        votingService.submitAnswerChoice(Carlos);
-     
-        votingService.showAnswerResults();
-
-        // MULTIPLE SELECTION QUESTION 2
-        String[] answerChoice4 = {"Green", "Indigo", "Cyan", "Teal"};
-        mcVotingService.generateQuestion("Select only the colors that are not in the rainbow.", "Multiple", answerChoice4);
-        mcVotingService.setMultipleChoiceCorrectAnswer(new String[] {"Cyan", "Teal"});
-
-        mcVotingService.showQuestion();
-        
-        Kaiden.pullMultipleRandAnswers(answerChoice4);
-        mcVotingService.submitAnswerChoice(Kaiden);
-
-        Brandon.pullMultipleRandAnswers(answerChoice4);
-        mcVotingService.submitAnswerChoice(Brandon);
-
-        Julian.pullMultipleRandAnswers(answerChoice4);
-        mcVotingService.submitAnswerChoice(Julian);
-
-        Carlos.pullMultipleRandAnswers(answerChoice4);
-        mcVotingService.submitAnswerChoice(Carlos);
-
-        mcVotingService.showAnswerResults();
+    /**
+     * Generates a random number of students between 10 and 50.
+     * @return A list of randomly generated students.
+     */
+    private static List<Student> generateRandomStudents() {
+        Random random = new Random();
+        int numStudents = random.nextInt(41) + 10; // Random number between 10 and 50
+        List<Student> students = new ArrayList<>();
+        for (int i = 0; i < numStudents; i++) {
+            students.add(new Student("Student" + i));
+        }
+        return students;
     }
 }
